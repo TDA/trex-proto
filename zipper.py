@@ -1,5 +1,5 @@
 import zipfile
-from zipfile_infolist import print_info
+
 import os
 
 def unzip_file(path_to_zip_file, directory_to_extract_to):
@@ -18,31 +18,38 @@ def zip_files(files_list):
     except:
         compression = zipfile.ZIP_STORED
 
+    print "Compression type", compression
     modes = {
         zipfile.ZIP_DEFLATED: 'deflated',
         zipfile.ZIP_STORED: 'stored',
     }
+    print "Mode", modes[compression]
 
     compressed_folder = 'compressed_folder.zip'
 
     print "Creating archive"
     zip_ref = zipfile.ZipFile(compressed_folder, mode='w')
     for file in files_list:
-        try:
-            print "adding file with compression mode", modes[compression]
-            zip_ref.write(file, compress_type=compression)
-        except:
-            print "Unable to compress the file", file
-            continue
-
+        if not file.startswith('.'):
+            try:
+                print "adding file", file, "with compression mode", modes[compression]
+                zip_ref.write(file, compress_type=compression)
+            except Exception as ex:
+                print ex
+                print "Unable to compress the file", file
+                continue
     print 'Closing zipper'
     zip_ref.close()
-    print_info(compressed_folder)
+
 
 if __name__ == '__main__':
     # test driver program for unzipper
     destination_path = '/Users/schandramouli/Downloads/images-runzipped'
-    zip_file_path = '/Users/schandramouli/Downloads/images-re.zip'
+    zip_file_path = '/Users/schandramouli/Downloads/images-text.zip'
     unzip_file(zip_file_path, destination_path)
-    files_list = os.listdir(destination_path)
+    dest_dir = os.path.join(destination_path, "images-text")
+    files_list = os.listdir(dest_dir)
+    print files_list
+    os.chdir(dest_dir)
+    zip_files(files_list)
 
