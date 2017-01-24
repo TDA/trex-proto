@@ -1,5 +1,4 @@
 import zipfile
-
 import os
 
 def unzip_file(path_to_zip_file, directory_to_extract_to):
@@ -11,6 +10,8 @@ def unzip_file(path_to_zip_file, directory_to_extract_to):
     else:
         print "Invalid zip file"
 
+# Might need refactoring on this one, as its way too long
+# lets try moving out the configs first
 def zip_files(files_list):
     try:
         import zlib
